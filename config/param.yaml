@@ -1,0 +1,85 @@
+icp_localization:
+  initial_pose:
+    x: 0.0 # -4.338 #-4.338 for darpa
+    y: 0.0 # 0.59 # 0.59 for darpa
+    z: 0.0 #0.676 # 0.676 for darpa
+    roll: 0.0  #rpy in deg
+    pitch: 0.0
+    yaw: 90.0 #-7.0 #-30.0 for Hoengg, -90 for Hoengg forest, -7 for darpa
+  imu_data_topic: "/versavis/imu" #"/sensors/imu" #
+  odometry_data_topic: "/msf_core/odometry" #"/camera/odom/sample" "/msf_core/odometry" #
+  num_accumulated_range_data: 1
+  range_data_topic: "/rslidar_points" # "/point_cloud_filter/velodyne/point_cloud_filtered" #
+  is_use_odometry: true
+  is_provide_odom_frame: true
+  gravity_vector_filter_time_constant: 0.01
+  fixed_frame: "map"
+
+calibration:
+  imu_to_range_sensor:
+    x: -0.251
+    y: 0.024
+    z: 0.255
+    roll: 0.0
+    pitch: 0.0
+    yaw: 1.571  
+  odometry_source_to_range_sensor:
+    x: -0.251
+    y: 0.024
+    z: 0.255
+    roll: 0.0
+    pitch: 0.0
+    yaw: 1.571  
+
+
+
+
+#for the smb
+#  imu_to_range_sensor:
+#    x: -0.251
+#    y: 0.024
+#    z: 0.255
+#    roll: 0.0
+#    pitch: 0.0
+#    yaw: 1.571  
+#  odometry_source_to_range_sensor:
+#    x: -0.305
+#    y: -0.008
+#    z: 0.083
+#    roll: 0.0
+#    pitch: 0.0
+#    yaw: 1.571 
+
+
+#for sensor stick
+#  imu_to_range_sensor:
+#    x: -0.041
+#    y: 0.034
+#    z: -0.057
+#    roll: 3.14159
+#    pitch: 0.0
+#    yaw: -2.79253
+#  odometry_source_to_range_sensor:
+#    x: -0.076
+#    y: -0.024
+#    z: 0.034
+#    roll: 0.0
+#    pitch: 0.0
+#    yaw: 0.0 
+
+
+  # for anymal
+#  imu_to_range_sensor:
+#    x: 0.208
+#    y: 0.058
+#    z: -0.084
+#    roll: 3.14159
+#    pitch: 0.0
+#    yaw: 0.0
+#  odometry_source_to_range_sensor:
+#    x: 0.27
+#    y: 0.0
+#    z: 0.268
+#    roll: 0.0
+#    pitch: 0.0
+#    yaw: 0.0     

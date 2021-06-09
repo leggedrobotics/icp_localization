@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<!-- <arg name="launch_prefix" default="gdb -ex run -args" /> -->
+	<arg name="launch_prefix" default="" />
+
+	<arg name="icp_config_name" default="icp.yaml" />
+	<arg name="icp_config_path"
+		default="$(find icp_localization)/config/$(arg icp_config_name)" />
+
+	<arg name="input_filters_config_name" default="input_filters.yaml" />
+	<arg name="input_filters_config_path"
+		default="$(find icp_localization)/config/$(arg input_filters_config_name)" />
+
+	 <arg name="pcd_filename" default="hoengg_map.pcd" /> 
+	 <arg name="pcd_filepath" 
+		default="$(find icp_localization)/data/$(arg pcd_filename)" /> 
+
+	<!-- 
+	<arg name="pcd_filepath"
+		default="/home/jelavice/catkin_workspaces/se2_ws/src/darpa/ground_truth/data/Urban_Circuit_LowRes_Scan_beta_UpperFloor.pcd" />
+	 -->
+ 
+	<arg name="bag_filename" default="big_loop.bag" /> 
+	<arg name="bag_filepath" 
+		default="$(find icp_localization)/data/$(arg bag_filename)" /> 
+		<!-- 
+	<arg name="bag_filepath"
+		default="/home/jelavice/darpa_begs/full_sensors_mission_beta_2_bear2020-02-26-10-57-07.bag" />
+		 -->
+
+	<arg name="play_delay" default="0.4" />
+	<arg name="play_rate" default="1.0" />
+	<arg name="use_sim_time" default="true" />
+
+	<arg name="launch_rviz" default="true" />
+	<arg name="rviz_config_file"
+		default="$(find icp_localization)/rviz/tree_detection_eval.rviz" />
+
+
+
+	<param name="/use_sim_time" value="$(arg use_sim_time)" />
+
+	<!-- Launch tree_detection node -->
+	<node name="icp_node" pkg="icp_localization" type="localizer_node"
+		output="screen" launch-prefix="$(arg launch_prefix)">
+		<param name="pcd_filename" value="$(arg pcd_filepath)" />
+		<rosparam command="load"
+			file="$(find icp_localization)/config/param.yaml" />
+		<param name="icp_config_path" value="$(arg icp_config_path)" />
+		<param name="input_filters_config_path"
+			value="$(arg input_filters_config_path)" />
+	</node>
+
+	<!-- Publish robot states from rosbag -->
+	<node pkg="rosbag" type="play" name="rosbag"
+		args="'$(arg bag_filepath)' --delay '$(arg play_delay)' --rate '$(arg play_rate)' --clock -s 3" />
+	<!-- append - -loop for looping -->
+
+
+	<node name="rviz_icp" pkg="rviz" type="rviz"
+		args="-d $(find  icp_localization)/rviz/localization.rviz"
+		if="$(arg launch_rviz)">
+	</node>
+
+	<!-- useful for darpa debugging <node pkg="tf" type="static_transform_publisher" 
+		name="map_to_loam" args="-4.338 0.59 0.676 -0.002 0.004 -0.065 0.998 map 
+		odom 100" /> -->
+</launch>

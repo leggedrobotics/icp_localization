@@ -1,0 +1,15 @@
+- DistanceLimitDataPointsFilter:
+    dim: -1 # -1 means radial distance, 0 is x, 1 is y, 2 is y
+    dist: 60
+    removeInside: 0
+- RandomSamplingDataPointsFilter:
+    prob: 0.25
+- SurfaceNormalDataPointsFilter:
+    knn: 8
+    epsilon: 0
+    keepNormals: 1
+    keepDensities: 1
+- ObservationDirectionDataPointsFilter
+- OrientNormalsDataPointsFilter 
+- MaxDensityDataPointsFilter:
+    maxDensity: 10000.0
