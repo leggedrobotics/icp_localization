@@ -15,11 +15,20 @@
 	 <arg name="pcd_filename" default="hoengg_map.pcd" /> 
 	 <arg name="pcd_filepath" 
 		default="$(find icp_localization)/data/$(arg pcd_filename)" /> 
+ 
+	<arg name="bag_filename" default="big_loop.bag" /> 
+	<arg name="bag_filepath" 
+		default="$(find icp_localization)/data/$(arg bag_filename)" /> 
 
-	<arg name="launch_rviz" default="false" />
+	<arg name="play_delay" default="0.4" />
+	<arg name="play_rate" default="1.0" />
+	<arg name="use_sim_time" default="true" />
 
+	<arg name="launch_rviz" default="true" />
 
-	<!-- Launch icp node -->
+	<param name="/use_sim_time" value="$(arg use_sim_time)" />
+
+	<!-- Launch tree_detection node -->
 	<node name="icp_node" pkg="icp_localization" type="localizer_node"
 		output="screen" launch-prefix="$(arg launch_prefix)">
 		<param name="pcd_filename" value="$(arg pcd_filepath)" />
@@ -30,9 +39,13 @@
 			value="$(arg input_filters_config_path)" />
 	</node>
 
+	<!-- Publish robot states from rosbag -->
+	<node pkg="rosbag" type="play" name="rosbag"
+		args="'$(arg bag_filepath)' --delay '$(arg play_delay)' --rate '$(arg play_rate)' --clock -s 3" />
+	<!-- append - -loop for looping -->
+
 
   <include file="$(find icp_localization)/launch/icp_vis.launch" if="$(arg launch_rviz)">
   </include>
-
 
 </launch>
