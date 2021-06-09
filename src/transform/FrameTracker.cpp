@@ -34,6 +34,27 @@ Rigid3d FrameTracker::getTransform(const Time &time,
 
 }
 
+void FrameTracker::setMinNumOdomMeasurementsBeforeReady(int val){
+	minNumOdomMeasurementsBeforeReady_ = val;
+}
+
+bool FrameTracker::isReady() const{
+	const bool isOdomBufferReady = odomToTrackingCamera_.size()>minNumOdomMeasurementsBeforeReady_ || !isUseOdometryForRangeSensorPosePrediction_;
+	// std::cout << "Odom buffer ready: " << isOdomBufferReady << std::endl;
+	// std::cout << "Range buffer ready: " << isRangeBufferReady << std::endl;
+	// std::cout << "is use odom for prediciton: " << isUseOdometryForRangeSensorPosePrediction_ << std::endl;
+	return isOdomBufferReady;
+}
+
+
+bool FrameTracker::isRangeSensorTrasformBufferEmpty() const{
+	return mapToLidar_.empty();
+
+}
+  bool FrameTracker::isOdomTransformBufferEmpty() const{
+  	return odomToTrackingCamera_.empty();
+  }
+
 Rigid3d FrameTracker::getTransformOdomSourceToRangeSensor(
 		const Time &time) const {
 	return cameraToLidar_;

@@ -14,6 +14,8 @@ icp_localization:
   is_provide_odom_frame: true
   gravity_vector_filter_time_constant: 0.01
   fixed_frame: "map"
+  min_num_odom_msgs_before_ready: 300
+
 
 calibration:
   imu_to_range_sensor:

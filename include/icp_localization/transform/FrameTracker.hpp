@@ -39,6 +39,11 @@ class FrameTracker{
   void setTransformImuToRangeSensor(const Rigid3d &t);
   void setTransformOdometrySourceToRangeSensor(const Rigid3d &t);
   void setIsUseOdometryForRangeSensorPosePrediction(bool value);
+  void setMinNumOdomMeasurementsBeforeReady(int val);
+
+  bool isRangeSensorTrasformBufferEmpty() const;
+  bool isOdomTransformBufferEmpty() const;
+  bool isReady() const;
 
  private:
 
@@ -52,6 +57,7 @@ class FrameTracker{
   Rigid3d imuToLidar_;
   bool isUseOdometryForRangeSensorPosePrediction_ = true;
   std::shared_ptr<ImuTracker> imuTracker_;
+  int minNumOdomMeasurementsBeforeReady_ = 300;
 
 };
 

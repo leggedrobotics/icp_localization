@@ -155,6 +155,11 @@ void ICPlocalization::initialize() {
 	frameTracker_->setTransformImuToRangeSensor(imuToRangeSensor);
 	frameTracker_->setIsUseOdometryForRangeSensorPosePrediction(isUseOdometry_);
 
+	const int minNumOdomMeasurements = nh_.param<int>("icp_localization/min_num_odom_msgs_before_ready", 300);
+
+	frameTracker_->setMinNumOdomMeasurementsBeforeReady(minNumOdomMeasurements);
+	std::cout << "Min num odom measurements before ready: " << minNumOdomMeasurements << std::endl;
+
 	std::cout << "Calibration: \n";
 	std::cout << "imu to range sensor: " << imuToRangeSensor.asString()
 			<< "\n\n";
@@ -278,7 +283,7 @@ void ICPlocalization::publishRegisteredCloud() const {
 void ICPlocalization::icpWorker() {
 	ros::Rate r(100);
 	while (ros::ok()) {
-		if (!rangeDataAccumulator_.isAccumulatedRangeDataReady()) {
+		if (!rangeDataAccumulator_.isAccumulatedRangeDataReady() || !frameTracker_->isReady()) {
 			r.sleep();
 			continue;
 		}
