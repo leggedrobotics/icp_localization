@@ -12,7 +12,7 @@
 	<arg name="input_filters_config_path"
 		default="$(find icp_localization)/config/$(arg input_filters_config_name)" />
 
-	 <arg name="pcd_filename" default="hoengg_map.pcd" /> 
+	 <arg name="pcd_filename" default="compslam_map.pcd" /> 
 	 <arg name="pcd_filepath" 
 		default="$(find icp_localization)/data/$(arg pcd_filename)" /> 
 

@@ -5,7 +5,7 @@ icp_localization:
     z: 0.0 #0.676 # 0.676 for darpa
     roll: 0.0  #rpy in deg
     pitch: 0.0
-    yaw: 90.0 #-7.0 #-30.0 for Hoengg, -90 for Hoengg forest, -7 for darpa
+    yaw: 0.0 #-7.0 #-30.0 for Hoengg, -90 for Hoengg forest, -7 for darpa
   imu_data_topic: "/versavis/imu" #"/sensors/imu" #
   odometry_data_topic: "/msf_core/odometry" #"/camera/odom/sample" "/msf_core/odometry" #
   num_accumulated_range_data: 1
