@@ -17,14 +17,14 @@
 		default="$(find icp_localization)/data/$(arg pcd_filename)" /> 
 
 	<arg name="launch_rviz" default="false" />
+	<arg name="parameter_filepath" default="$(find icp_localization)/config/param.yaml"/>
 
 
 	<!-- Launch icp node -->
 	<node name="icp_node" pkg="icp_localization" type="localizer_node"
 		output="screen" launch-prefix="$(arg launch_prefix)">
 		<param name="pcd_filename" value="$(arg pcd_filepath)" />
-		<rosparam command="load"
-			file="$(find icp_localization)/config/param.yaml" />
+		<rosparam command="load" file="$(arg parameter_filepath)" />
 		<param name="icp_config_path" value="$(arg icp_config_path)" />
 		<param name="input_filters_config_path"
 			value="$(arg input_filters_config_path)" />
