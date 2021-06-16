@@ -149,7 +149,7 @@ void TfPublisher::imuCallback(const sensor_msgs::Imu &msg) {
 	const auto lidarToImu = frameTracker_->getTransformImuToRangeSensor(
 			imuReading.time_).inverse();
 	geometry_msgs::TransformStamped transformStamped = toRos(lidarToImu,
-			imuReading.time_, "range_sensor", "imu");
+			imuReading.time_, "range_sensor", "inertial_sensor");
 	tfBroadcaster_.sendTransform(transformStamped);
 
 //	{
