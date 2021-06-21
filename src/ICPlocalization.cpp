@@ -42,6 +42,9 @@ ICPlocalization::ICPlocalization(const ros::NodeHandle &nh) :
 
 ICPlocalization::~ICPlocalization() {
 	icpWorker_.join();
+	Rigid3d lastPose(lastPosition_, lastOrientation_);
+	std::cout << "ICP_LOCO: Last transform map to range sensor: \n";
+	std::cout<< lastPose.asString() << "\n";
 }
 
 void ICPlocalization::setMapCloud(const Pointcloud &map) {
