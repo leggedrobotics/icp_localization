@@ -15,6 +15,9 @@
 #include "icp_localization/common/typedefs.hpp"
 #include "icp_localization/helpers.hpp"
 #include "icp_localization/RangeDataAccumulator.hpp"
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_ros/transform_listener.h>
+#include <eigen_conversions/eigen_msg.h>
 
 
 namespace icp_loco {
@@ -40,10 +43,13 @@ class ICPlocalization
   void publishPose() const;
   void publishRegisteredCloud() const;
   const std::string &getFixedFrame() const;
+  void set2DPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg);
 
  private:
   void initializeInternal();
 
+  Eigen::Vector3d set_pose_vector_;
+	Eigen::Quaterniond set_pose_quaternion_;
   Eigen::Vector3d lastPosition_;
   Eigen::Quaterniond lastOrientation_;
   Eigen::Vector3d currentPosition_;
@@ -52,6 +58,7 @@ class ICPlocalization
   ros::NodeHandle nh_;
   ros::Publisher registeredCloudPublisher_;
   ros::Publisher posePub_;
+  ros::Subscriber initialPose_;
   PM::ICPSequence icp_;
   PM::DataPointsFilters inputFilters_;
   DP refCloud_;
@@ -67,8 +74,11 @@ class ICPlocalization
   std::shared_ptr<TfPublisher> tfPublisher_;
   std::shared_ptr<FrameTracker> frameTracker_;
   std::shared_ptr<ImuTracker> imuTracker_;
+  std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
+  std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
   bool isFirstScanMatch_ = true;
   bool isUseOdometry_ = false;
+  bool setPoseFlag = false;
   std::string fixedFrame_ = "map";
 };
 

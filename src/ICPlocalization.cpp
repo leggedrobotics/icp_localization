@@ -66,6 +66,20 @@ void ICPlocalization::setInitialPose(const Eigen::Vector3d &p,
 	tfPublisher_->setInitialPose(p, q);
 }
 
+void ICPlocalization::set2DPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg){
+	// Get transform between range_sensor and base_link
+	geometry_msgs::TransformStamped base_link_to_range_sensor = tf_buffer_->lookupTransform("base_link", 
+													"range_sensor", ros::Time(0), ros::Duration(1.0));
+	geometry_msgs::Pose pose_received = msg->pose.pose;
+
+	// Transform pose
+	tf2::doTransform(pose_received, pose_received, base_link_to_range_sensor);
+
+	tf::pointMsgToEigen(msg->pose.pose.position, set_pose_vector_);
+	tf::quaternionMsgToEigen(pose_received.orientation, set_pose_quaternion_);
+	setPoseFlag = true;	
+}
+
 void ICPlocalization::initializeInternal() {
 
 	imuTracker_ = std::make_shared<ImuTracker>();
@@ -81,6 +95,10 @@ void ICPlocalization::initializeInternal() {
 	posePub_ = nh_.advertise<geometry_msgs::PoseStamped>("range_sensor_pose",
 			1, true);
 	icp_.setDefault();
+
+	// Initialite tf listener
+	tf_buffer_.reset(new tf2_ros::Buffer(ros::Duration(10)));
+  	tf_listener_.reset(new tf2_ros::TransformListener(*tf_buffer_));
 }
 
 void ICPlocalization::initialize() {
@@ -188,6 +206,9 @@ void ICPlocalization::initialize() {
 	tfPublisher_->initialize();
 
 	std::cout << "ICPlocalization: Initialized \n";
+
+	// Set 2D pose subscribe
+	initialPose_ = nh_.subscribe("/initialpose",1, &ICPlocalization::set2DPoseCallback, this);
 }
 
 DP ICPlocalization::fromPCL(const Pointcloud &pcl) {
@@ -222,17 +243,25 @@ void ICPlocalization::matchScans() {
 //    std::cout << "Prediction diff: " << motionPoseChange.asString() << std::endl;
 	}
 
-	PM::TransformationParameters initPose = getTransformationMatrix<float>(
-			toFloat(initPosition), toFloat(initOrientation));
+	PM::TransformationParameters initPose;
 // Compute the transformation to express data in ref
 	inputFilters_.apply(regCloud_);
 //	optimizedPose_ = initPose;
-	try{
-		optimizedPose_ = icp_(regCloud_, initPose);
-	} catch (const std::exception &e){
-		std::cerr << "Caught exception while scan matching: " << e.what() << std::endl;
-		optimizedPose_ = initPose;
+	if(!setPoseFlag){
+		try{
+			initPose = getTransformationMatrix<float>(toFloat(initPosition), toFloat(initOrientation));
+			optimizedPose_ = icp_(regCloud_, initPose);
+		} catch (const std::exception &e){
+			std::cerr << "Caught exception while scan matching: " << e.what() << std::endl;
+			optimizedPose_ = initPose;
+		}
 	}
+	else	
+	{
+		optimizedPose_ = getTransformationMatrix<float>(toFloat(set_pose_vector_), toFloat(set_pose_quaternion_));
+		setPoseFlag = false;
+	}
+
 	optimizedPoseTimestamp_ = regCloudTimestamp_;
 	getPositionAndOrientation<double>(toDouble(optimizedPose_), &lastPosition_,
 			&lastOrientation_);
