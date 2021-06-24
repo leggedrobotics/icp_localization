@@ -67,17 +67,24 @@ void ICPlocalization::setInitialPose(const Eigen::Vector3d &p,
 }
 
 void ICPlocalization::set2DPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg){
-	// Get transform between range_sensor and base_link
-	geometry_msgs::TransformStamped base_link_to_range_sensor = tf_buffer_->lookupTransform("base_link", 
-													"range_sensor", ros::Time(0), ros::Duration(1.0));
-	geometry_msgs::Pose pose_received = msg->pose.pose;
+	try
+	{
+		// Get transform between range_sensor and base_link
+		geometry_msgs::TransformStamped base_link_to_range_sensor = tf_buffer_->lookupTransform("base_link", 
+														"range_sensor", ros::Time(0), ros::Duration(1.0));
+		geometry_msgs::Pose pose_received = msg->pose.pose;
 
-	// Transform pose
-	tf2::doTransform(pose_received, pose_received, base_link_to_range_sensor);
+		// Transform pose
+		tf2::doTransform(pose_received, pose_received, base_link_to_range_sensor);
 
-	tf::pointMsgToEigen(msg->pose.pose.position, set_pose_vector_);
-	tf::quaternionMsgToEigen(pose_received.orientation, set_pose_quaternion_);
-	setPoseFlag = true;	
+		tf::pointMsgToEigen(msg->pose.pose.position, set_pose_vector_);
+		tf::quaternionMsgToEigen(pose_received.orientation, set_pose_quaternion_);
+		setPoseFlag = true;	
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << "Caught exception while setting 2D pose: " << e.what() << '\n';
+	}
 }
 
 void ICPlocalization::initializeInternal() {
