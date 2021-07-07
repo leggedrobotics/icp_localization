@@ -1,12 +1,17 @@
+# reading filters get applied to the scans as they arrive. They are applied
+# after the filters from the ones specified in the file input_filters.yaml
+
 readingDataPointsFilters:
   - RandomSamplingDataPointsFilter:
       prob: 1.0
+
+#reference filtersget applied to the map and to the icp
 
 referenceDataPointsFilters:
 #  - MaxDistDataPointsFilter:
 #      maxDist: 20.0
   - RandomSamplingDataPointsFilter:
-      prob: 0.7
+      prob: 1.0
 
 matcher:
   KDTreeMatcher:

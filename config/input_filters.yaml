@@ -1,6 +1,8 @@
+# these filters get applied to the scans from the range sensor for each scan.
+
 - DistanceLimitDataPointsFilter:
     dim: -1 # -1 means radial distance, 0 is x, 1 is y, 2 is y
-    dist: 60
+    dist: 20
     removeInside: 0
 - RandomSamplingDataPointsFilter:
     prob: 0.25
