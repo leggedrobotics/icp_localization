@@ -1,4 +1,3 @@
-
 # Localization using ICP in a known map
 
 ## Overview
@@ -30,22 +29,27 @@ The package has been tested on the platforms shown in the images below. It has a
 
 ## Installation
 
-Clone the libnabo from https://github.com/leggedrobotics/libnabo :  
-`git clone git@github.com:leggedrobotics/libnabo.git`  
+Clone the following three dependencies:
+```bash
+# in your source folder `src`
+git clone https://github.com/leggedrobotics/libnabo.git
+git clone https://github.com/leggedrobotics/libpointmatcher.git
+git clone https://github.com/leggedrobotics/pointmatcher-ros.git
+```
 
-Clone the libpointmatcher from https://github.com/leggedrobotics/libpointmatcher :  
-`git clone git@github.com:leggedrobotics/libpointmatcher.git`
-
-Clone the pintmatcher_ros from https://github.com/leggedrobotics/pointmatcher-ros :  
-`git clone git@github.com:leggedrobotics/pointmatcher-ros.git`
-
-Install pcl_ros and pcl_conversions with:  
-`sudo apt install ros-noetic-pcl-ros ros-noetic-pcl-conversions`
-
-Build with:  
-`catkin build icp_localization`  
+Install ROS and library dependencies with:  
+```bash
+sudo apt install -y ros-noetic-pcl-ros ros-noetic-pcl-conversions ros-noetic-eigen-conversions ros-noetic-tf-conversions ros-noetic-tf2-geometry libgoogle-glog-dev
+# or, use rosdep in your source folder `src` 
+sudo rosdep install -yr --from-paths .
+```
 
 Recommended to build in release mode for performance (`catkin config -DCMAKE_BUILD_TYPE=Release`)
+
+Build with:  
+```bash
+catkin build icp_localization
+```
 
 ## Usage
 
@@ -92,4 +96,5 @@ The rest of the parameters is explained below:
 <img src="doc/frames.png" alt="frames" width="345" height="309"/>
 
 All coordinate frames follow the URDF convention: http://wiki.ros.org/urdf/XML/joint.
+
 
