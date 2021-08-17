@@ -8,20 +8,20 @@
 	<arg name="icp_config_path"
 		default="$(find icp_localization)/config/$(arg icp_config_name)" />
 
-	<arg name="input_filters_config_name" default="input_filters_velodyne_puck.yaml" />
+	<arg name="input_filters_config_name" default="input_filters_ouster_os1.yaml" />
 	<arg name="input_filters_config_path"
 		default="$(find icp_localization)/config/$(arg input_filters_config_name)" />
 
-	 <arg name="pcd_filename" default="urban.pcd" /> 
+	 <arg name="pcd_filename" default="forest.pcd" /> 
 	 <arg name="pcd_filepath" 
 		default="$(find icp_localization)/data/$(arg pcd_filename)" /> 
  
-	<arg name="bag_filename" default="urban.bag" /> 
+	<arg name="bag_filename" default="forest.bag" /> 
 	<arg name="bag_filepath" 
 		default="$(find icp_localization)/data/$(arg bag_filename)" /> 
 	
 	
-	<arg name="parameter_filepath" default="$(find icp_localization)/config/param_urban_example.yaml"/>
+	<arg name="parameter_filepath" default="$(find icp_localization)/config/param_forest_example.yaml"/>
 		
 	<arg name="play_delay" default="0.4" />
 	<arg name="play_rate" default="1.0" />
