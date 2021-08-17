@@ -40,7 +40,7 @@ git clone https://github.com/leggedrobotics/pointmatcher-ros.git
 Install ROS and library dependencies with:  
 ```bash
 sudo apt install -y ros-noetic-pcl-ros ros-noetic-pcl-conversions ros-noetic-eigen-conversions ros-noetic-tf-conversions ros-noetic-tf2-geometry libgoogle-glog-dev
-# or, use rosdep in your source folder `src` 
+# OR, use rosdep in your source folder `src` 
 sudo rosdep install -yr --from-paths .
 ```
 
