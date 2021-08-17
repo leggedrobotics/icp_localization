@@ -15,7 +15,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>libgoogle-glog-dev</depend>
-  <dpened>ros-noetic-eigen-conversions</depend>
+  <depend>ros-noetic-eigen-conversions</depend>
   <depend>ros-noetic-tf-conversions</depend>
   <depend>ros-noetic-tf2-geometry</depend>
   <depend>pcl_conversions</depend>
