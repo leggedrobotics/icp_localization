@@ -20,7 +20,7 @@ Released under [BSD 3-Clause license](LICENSE). Parts of the code in this repo h
 
 | handheld | skid steer robot | legged robot |
 |:--------:|------------------|--------------|
-|          |                  |              |
+|[![handheld](doc/sensor_module.png)](doc/sensor_module.png)|[![skid-steer](doc/smb.png)](doc/smb.png)|[![anymal](doc/anymal.png)](doc/anymal.png)|
 
 
 
