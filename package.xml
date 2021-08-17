@@ -4,12 +4,12 @@
 
   <name>icp_localization</name>
   <version>0.5.0</version>
-  <description>Tree detector from the point clouds</description>
+  <description>ICP localization in a given map.</description>
 
   <license>BSD</license>
 
-  <author email="jelavice@ethz.ch">EJ</author>
-  <maintainer email="jelavice@ethz.ch">EJr</maintainer>
+  <author email="jelavice@ethz.ch">Edo Jelavic</author>
+  <maintainer email="jelavice@ethz.ch">Edo Jelavic</maintainer>
 
 
   <buildtool_depend>catkin</buildtool_depend>

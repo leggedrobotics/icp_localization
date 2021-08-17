@@ -1,18 +1,16 @@
-# reading filters get applied to the scans as they arrive. They are applied
-# after the filters from the ones specified in the file input_filters.yaml
-
-readingDataPointsFilters:
-  - RandomSamplingDataPointsFilter:
-      prob: 1.0
-
-#reference filtersget applied to the map and to the icp
-
+#reference filters get applied to the map and to the icp
 referenceDataPointsFilters:
 #  - MaxDistDataPointsFilter:
 #      maxDist: 20.0
   - RandomSamplingDataPointsFilter:
       prob: 1.0
-
+  - SurfaceNormalDataPointsFilter:
+      knn: 5
+      epsilon: 0
+      keepNormals: 1
+      keepDensities: 1
+  - ObservationDirectionDataPointsFilter
+  - OrientNormalsDataPointsFilter 
 matcher:
   KDTreeMatcher:
     knn: 3
