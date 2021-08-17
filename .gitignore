@@ -2,3 +2,4 @@ data/*
 !data/.gitkeep
 *.pcd
 .vscode
+.*.swp
