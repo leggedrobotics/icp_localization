@@ -51,9 +51,11 @@ Recommended to build in release mode for performance (`catkin config -DCMAKE_BUI
 
 This package is based on the `libpointmatcher` package and it uses the ICP implementation from there. Libpointmatcher has an extensive [documentation](https://libpointmatcher.readthedocs.io/en/latest/). icp_localization provides ROS wrappers and uses either odometry or IMU measurements to calculate initial guesses for the pointcloud alignment.
 
-You can launch the program with: `roslaunch icp_localization icp_node.launch`. The `pcd_filepath` parameter in the launch file should point to the location where you stored your refrence map (pointcloud) in the `.pcd` format.
+You can launch the program on the robot with: `roslaunch icp_localization icp_node.launch`. The `pcd_filepath` parameter in the launch file should point to the location where you stored your refrence map (pointcloud) in the `.pcd` format.
 
-You can download the example bags and the example config files [here](https://drive.google.com/drive/folders/1XF3MUqT55m2beZYUe_IHQ4uhf6LF8m2J?usp=sharing). You can copy paste the rosbag and the map (`.pcd` file) to the `data` folder. Put the `.yaml` file in the config folder and you should be ready to run the forest environment example. For running the urban example, please adjust the parameters in the `icp_node_rosbag.launch` file. You need to chnage the `pcd_filename`, `input_filters_config_name` and the `parameter_filepath`.
+You can download the example bags and the example config files [here](https://drive.google.com/drive/folders/1XF3MUqT55m2beZYUe_IHQ4uhf6LF8m2J?usp=sharing). You can copy paste the rosbag and the map (`.pcd` file) to the `data` folder. Put the `.yaml` file in the config folder and you should be ready to run the forest environment example. For running the urban example, please adjust the parameters in the `icp_node_rosbag.launch` file. You need to chnage the `pcd_filename`, `input_filters_config_name`, `bag_filename` and the `parameter_filepath`.
+
+The rosbag examples can be luaunched with `roslaunch icp_localization icp_node_rosbag.launch`
 
 Note that the urban dataset uses the velodyne LIDAR whereas the forest dataset uses the ouster LIDAR. Please adjust the input_filters config file accordingly. Furthermore, in the forest dataset instead of full scans, each lidar packet is converted to pointcloud msg and then published.
 
