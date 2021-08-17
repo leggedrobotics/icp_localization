@@ -48,8 +48,8 @@ class ICPlocalization
  private:
   void initializeInternal();
 
-  Eigen::Vector3d set_pose_vector_;
-	Eigen::Quaterniond set_pose_quaternion_;
+  Eigen::Vector3d userSetPosition_;
+  Eigen::Quaterniond userSetQuaternion_;
   Eigen::Vector3d lastPosition_;
   Eigen::Quaterniond lastOrientation_;
   Eigen::Vector3d currentPosition_;
@@ -74,11 +74,11 @@ class ICPlocalization
   std::shared_ptr<TfPublisher> tfPublisher_;
   std::shared_ptr<FrameTracker> frameTracker_;
   std::shared_ptr<ImuTracker> imuTracker_;
-  std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
-  std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tfListener_;
+  std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
   bool isFirstScanMatch_ = true;
   bool isUseOdometry_ = false;
-  bool setPoseFlag = false;
+  bool isSetPoseFromUser_ = false;
   std::string fixedFrame_ = "map";
 };
 

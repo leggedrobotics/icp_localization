@@ -1,0 +1,33 @@
+icp_localization:
+  initial_pose:
+    x: 1.5 
+    y: -1.0 
+    z: 0.0 
+    roll: 0.0  
+    pitch: 0.0
+    yaw: 55.0 
+  imu_data_topic: "/versavis/imu" 
+  odometry_data_topic: "/camera/odom/sample" 
+  num_accumulated_range_data: 1
+  range_data_topic: "/rslidar_points" 
+  is_use_odometry: true
+  is_provide_odom_frame: true
+  gravity_vector_filter_time_constant: 0.01
+  fixed_frame: "map"
+  min_num_odom_msgs_before_ready: 5
+
+calibration:
+  imu_to_range_sensor:
+    x: -0.251
+    y: 0.024
+    z: 0.255
+    roll: 0.0
+    pitch: 0.0
+    yaw: 1.571  
+  odometry_source_to_range_sensor:
+    x: -0.305
+    y: -0.008
+    z: 0.083
+    roll: 0.0
+    pitch: 0.0
+    yaw: 1.571 

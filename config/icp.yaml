@@ -1,13 +1,16 @@
-readingDataPointsFilters:
-  - RandomSamplingDataPointsFilter:
-      prob: 1.0
-
+#reference filters get applied to the map and to the icp
 referenceDataPointsFilters:
 #  - MaxDistDataPointsFilter:
 #      maxDist: 20.0
   - RandomSamplingDataPointsFilter:
-      prob: 0.7
-
+      prob: 1.0
+  - SurfaceNormalDataPointsFilter:
+      knn: 5
+      epsilon: 0
+      keepNormals: 1
+      keepDensities: 1
+  - ObservationDirectionDataPointsFilter
+  - OrientNormalsDataPointsFilter 
 matcher:
   KDTreeMatcher:
     knn: 3
