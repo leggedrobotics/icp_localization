@@ -38,7 +38,7 @@ jobs:
       run: |
         apt-get update
         rosdep update
-        rosdep install --from-paths src --ignore-src -r -y
+        DEBIAN_FRONTEND=noninteractive rosdep install --from-paths src --ignore-src -r -y
 
     - name: catkin_make
       shell: bash
