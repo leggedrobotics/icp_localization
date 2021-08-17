@@ -47,7 +47,7 @@ find_package(catkin REQUIRED
 
 find_package(PCL 1.10 REQUIRED)
 find_package(libpointmatcher REQUIRED)
-
+find_package(glog REQUIRED)
 
 ###################################
 ## catkin specific configuration ##
@@ -61,6 +61,7 @@ catkin_package(
     ${CATKIN_PACKAGE_DEPENDENCIES}
   DEPENDS
     PCL
+    glog
 )
 
 ###########
@@ -92,6 +93,7 @@ target_link_libraries(${PROJECT_NAME}
   ${LIBPOINTMATCHER_LIBRARIES}
   ${PCL_COMMON_LIBRARIES}
   ${PCL_IO_LIBRARIES}
+  glog
 )
 
 add_executable(localizer_node
