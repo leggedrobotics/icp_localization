@@ -1,6 +1,4 @@
 
-WORK IN PROGRESS
-
 # Localization using ICP in a known map
 
 ## Overview
