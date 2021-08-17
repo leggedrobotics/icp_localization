@@ -45,7 +45,7 @@ Recommended to build in release mode for performance (`catkin config -DCMAKE_BUI
 
 ## Usage
 
-This package is based on the `libpointmatcher` package which has an extensive [documentation](https://libpointmatcher.readthedocs.io/en/latest/).
+This package is based on the `libpointmatcher` package which has an extensive [documentation](https://libpointmatcher.readthedocs.io/en/latest/). This package uses the ICP implementation from libpointmatcher. We provide ROS wrappers and use either odometry or IMU measurements to calculate initial guesses for the pointcloud alignment.
 
 You can launch the program with: `roslaunch icp_localization icp_node.launch`. The `pcd_filepath` parameter in the launch file should point to the location where you stored your refrence map (pointcloud) in the `.pcd` format.
 
@@ -59,7 +59,16 @@ The `icp.yaml` file configures the ICP settings such as error metric and outlier
 
 The `input_filters.yaml` file configures operations that are applied to each scan of the range sensors. Subsampling, croppiing and normal computation is configured in this file. Two examples have been provided (one for the velodyne puck range sensor and the other one for the ouste OS1 sensor).   
 
-The filtering and the ICP can be configured by adding your own custom configuration `.yaml` files. Documentation on how to do that can be found [here](https://libpointmatcher.readthedocs.io/en/latest/Configuration/#creating-custom-configurations-with-yaml).
+The filtering and the ICP can be configured by adding your own custom configuration `.yaml` files. Documentation on how to do that can be found [here](https://libpointmatcher.readthedocs.io/en/latest/Configuration/#creating-custom-configurations-with-yaml).  
+
+The rest of the parameters is explained below:
+
+* `icp_localization/initial_pose` - initial pose of the range sensor frame in the provided map.
+* `icp_localization/imu_data_topic` - ROS topic on which the imu data is published
+* `icp_localization/odometry_data_topic` - ROS topic on which the odometry data is published
+* `icp_localization/num_accumulated_range_data` - Number of pointcloud messages that will be accumulated before trying to register them in a map. In case you are using full scans this parameter should be set to 1. In case you are publishing LIDAR packets, you need to convert them to sensor_msgs::Pointcloud2 first. At the moment there is no motion compensation implemented.
+* `icp_localization/range_data_topic` - ROS topic on which the LIDAR data is published
+* `icp_localization/is_use_odometry` - Whether to use odometry for initial pose prediction. If set the false, the pose extrapolator will try to use the imu data.
 
 
 
