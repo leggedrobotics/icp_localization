@@ -3,13 +3,13 @@ icp_localization:
     x: 0.0 
     y: 0.0 
     z: 0.0 
-    roll: 0.0  # degrees  
-    pitch: 0.0 # degrees
-    yaw: 0.0  # degrees
-  imu_data_topic: "/versavis/imu" 
+    roll: 0.0  
+    pitch: 0.0
+    yaw: 71.0 
+  imu_data_topic: "/xsensmt_node/rawImu" 
   odometry_data_topic: "/camera/odom/sample" 
-  num_accumulated_range_data: 1
-  range_data_topic: "/rslidar_points" 
+  num_accumulated_range_data: 32
+  range_data_topic: "/os1_node/packets_as_clouds" 
   is_use_odometry: true
   is_provide_odom_frame: true
   gravity_vector_filter_time_constant: 0.01

@@ -8,7 +8,7 @@
     dist: 40
     removeInside: 0
 - RandomSamplingDataPointsFilter:
-    prob: 1.0
+    prob: 0.9
 - SurfaceNormalDataPointsFilter:
     knn: 8
     epsilon: 0

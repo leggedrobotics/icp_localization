@@ -1,11 +1,11 @@
 icp_localization:
   initial_pose:
-    x: 0.0 
-    y: 0.0 
+    x: 1.5 
+    y: -1.0 
     z: 0.0 
-    roll: 0.0  # degrees  
-    pitch: 0.0 # degrees
-    yaw: 0.0  # degrees
+    roll: 0.0  
+    pitch: 0.0
+    yaw: 55.0 
   imu_data_topic: "/versavis/imu" 
   odometry_data_topic: "/camera/odom/sample" 
   num_accumulated_range_data: 1
@@ -18,16 +18,16 @@ icp_localization:
 
 calibration:
   imu_to_range_sensor:
-    x: -0.041
-    y: 0.034
-    z: -0.057
-    roll: 3.14159
-    pitch: 0.0
-    yaw: -2.79253
-  odometry_source_to_range_sensor:
-    x: -0.076
-    y: -0.024
-    z: 0.034
+    x: -0.251
+    y: 0.024
+    z: 0.255
     roll: 0.0
     pitch: 0.0
-    yaw: 0.0 
+    yaw: 1.571  
+  odometry_source_to_range_sensor:
+    x: -0.305
+    y: -0.008
+    z: 0.083
+    roll: 0.0
+    pitch: 0.0
+    yaw: 1.571 
