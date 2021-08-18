@@ -20,7 +20,7 @@ Released under [BSD 3-Clause license](LICENSE). Parts of the code in this repo h
 The package has been tested on the platforms shown in the images below. It has also been used during the ETH Robotic Summer School 2021
  ([link](https://robotics-summerschool.ethz.ch/)).  
  
-| handheld | skid steer robot | legged robot |
+| handheld sensor module | skid steer robot | legged robot |
 |:--------:|------------------|--------------|
 |[![handheld](doc/sensor_module.png)](doc/sensor_module.png)|[![skid-steer](doc/smb.png)](doc/smb.png)|[![anymal](doc/anymal.png)](doc/anymal.png)|
 
