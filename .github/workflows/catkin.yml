@@ -1,0 +1,48 @@
+name: Build
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        container: ["ros:noetic"]
+    runs-on: ubuntu-20.04
+    container: ${{ matrix.container }}
+
+    steps:
+    - name: update git
+      run: |
+        apt-get update 
+        apt-get install -y software-properties-common
+        add-apt-repository ppa:git-core/ppa
+        apt-get update
+        apt-get install -y git
+
+    - uses: actions/checkout@v2
+      with:
+        path: src/package
+        submodules: 'recursive'
+        
+    - name: source deps
+      run: |
+        cd src
+        git clone https://github.com/leggedrobotics/libnabo.git
+        git clone https://github.com/leggedrobotics/libpointmatcher.git
+        git clone https://github.com/leggedrobotics/pointmatcher-ros.git
+
+    - name: rosdep install
+      run: |
+        apt-get update
+        rosdep update
+        DEBIAN_FRONTEND=noninteractive rosdep install --from-paths src --ignore-src -r -y
+
+    - name: catkin_make
+      shell: bash
+      run: |
+        source /opt/ros/$ROS_DISTRO/setup.bash
+        catkin_make_isolated --merge -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
