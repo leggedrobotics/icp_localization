@@ -91,6 +91,7 @@ void ICPlocalization::initializeInternal() {
 
 	registeredCloudPublisher_ = nh_.advertise<sensor_msgs::PointCloud2>("registered_cloud", 1, true);
 	posePub_ = nh_.advertise<geometry_msgs::PoseStamped>("range_sensor_pose", 1, true);
+	odometryPub_ = nh_.advertise<nav_msgs::Odometry>("range_sensor_odometry", 1, true);
 	icp_.setDefault();
 
 	// Initialite tf listener
@@ -182,6 +183,8 @@ void ICPlocalization::initialize() {
 
 	fixedFrame_ = nh_.param<std::string>("icp_localization/fixed_frame", "map");
 	std::cout << "Setting fixed frame to: " << fixedFrame_ << std::endl;
+	rangeSensorFrame_ = nh_.param<std::string>("icp_localization/range_sensor_frame", "lidar");
+	std::cout << "Setting range sensor frame to: " << rangeSensorFrame_ << std::endl;
 
 	rangeDataAccumulator_.setParam(rangeDataAccParam);
 	rangeDataAccumulator_.initialize();
@@ -268,6 +271,11 @@ void ICPlocalization::publishPose() const {
 	pose_msg.header.stamp = toRos(optimizedPoseTimestamp_);
 	pose_msg.header.seq = seq_++;
 	posePub_.publish(pose_msg);
+	nav_msgs::Odometry odometry_msg;
+	odometry_msg.header = pose_msg.header;
+	odometry_msg.child_frame_id = rangeSensorFrame_;
+	odometry_msg.pose.pose = pose_msg.pose;
+	odometryPub_.publish(odometry_msg);
 
 	if (isUseOdometry_) {
 		tfPublisher_->publishMapToOdom(optimizedPoseTimestamp_);

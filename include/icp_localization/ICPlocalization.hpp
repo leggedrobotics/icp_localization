@@ -58,6 +58,7 @@ class ICPlocalization
   ros::NodeHandle nh_;
   ros::Publisher registeredCloudPublisher_;
   ros::Publisher posePub_;
+  ros::Publisher odometryPub_;
   ros::Subscriber initialPose_;
   PM::ICPSequence icp_;
   PM::DataPointsFilters inputFilters_;
@@ -80,6 +81,7 @@ class ICPlocalization
   bool isUseOdometry_ = false;
   bool isSetPoseFromUser_ = false;
   std::string fixedFrame_ = "map";
+  std::string rangeSensorFrame_ = "lidar";
 };
 
 
