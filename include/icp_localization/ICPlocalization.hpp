@@ -59,6 +59,7 @@ class ICPlocalization
   ros::Publisher registeredCloudPublisher_;
   ros::Publisher posePub_;
   ros::Publisher odometryPub_;
+  ros::Publisher odomSourcePosePub_;
   ros::Subscriber initialPose_;
   PM::ICPSequence icp_;
   PM::DataPointsFilters inputFilters_;

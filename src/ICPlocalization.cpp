@@ -92,6 +92,7 @@ void ICPlocalization::initializeInternal() {
 	registeredCloudPublisher_ = nh_.advertise<sensor_msgs::PointCloud2>("registered_cloud", 1, true);
 	posePub_ = nh_.advertise<geometry_msgs::PoseStamped>("range_sensor_pose", 1, true);
 	odometryPub_ = nh_.advertise<nav_msgs::Odometry>("range_sensor_odometry", 1, true);
+	odomSourcePosePub_ = nh_.advertise<geometry_msgs::PoseStamped>("odom_source_pose", 1, true);
 	icp_.setDefault();
 
 	// Initialite tf listener
@@ -265,6 +266,7 @@ void ICPlocalization::matchScans() {
 }
 
 void ICPlocalization::publishPose() const {
+	// range sensor pose
 	geometry_msgs::PoseStamped pose_msg;
 	pose_msg.pose = pointmatcher_ros::eigenMatrixToPoseMsg<float>(optimizedPose_);
 	pose_msg.header.frame_id = fixedFrame_;
@@ -277,6 +279,15 @@ void ICPlocalization::publishPose() const {
 	odometry_msg.pose.pose = pose_msg.pose;
 	odometryPub_.publish(odometry_msg);
 
+	// odom source pose
+	geometry_msgs::PoseStamped odom_source_pose_msg;
+	const Rigid3d mapToOdomSource = frameTracker_->getTransformMapToOdomSource(optimizedPoseTimestamp_);
+	PM::TransformationParameters odomSourcePose = getTransformationMatrix<float>(toFloat(mapToOdomSource.translation()), toFloat(mapToOdomSource.rotation()));
+	odom_source_pose_msg.pose = pointmatcher_ros::eigenMatrixToPoseMsg<float>(odomSourcePose);
+	odom_source_pose_msg.header = pose_msg.header;
+	odomSourcePosePub_.publish(odom_source_pose_msg);
+
+	// tf
 	if (isUseOdometry_) {
 		tfPublisher_->publishMapToOdom(optimizedPoseTimestamp_);
 	} else {

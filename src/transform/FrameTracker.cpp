@@ -100,6 +100,20 @@ Rigid3d FrameTracker::getTransformMapToOdom(const Time &time) const {
 	return mapToOdom;
 
 }
+
+Rigid3d FrameTracker::getTransformMapToOdomSource(const Time &time) const {
+
+	if (mapToLidar_.empty()){
+		std::cerr << "empty buffer cannot compute map to odom source" << std::endl;
+		return Rigid3d::Identity();
+	}
+
+	const auto mapToLidar = getTransformMapToRangeSensor(time);
+	const auto mapToOdomSource = mapToLidar * cameraToLidar_.inverse();
+
+	return mapToOdomSource;
+}
+
 void FrameTracker::setTransformMapToRangeSensor(
 		const TimestampedTransform &mapToTracking) {
 //  std::cout << "set map to lidar: " << mapToTracking.transform_.asString() << std::endl;

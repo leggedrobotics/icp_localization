@@ -30,6 +30,7 @@ class FrameTracker{
 
   Rigid3d getTransformOdomToOdomSource(const Time &time) const;
   Rigid3d getTransformMapToOdom(const Time &time) const;
+  Rigid3d getTransformMapToOdomSource(const Time &time) const;
   Rigid3d getTransformMapToRangeSensor(const Time &time) const;
   Rigid3d getTransformOdomSourceToRangeSensor(const Time &time) const;
   Rigid3d getTransformImuToRangeSensor(const Time &time) const;
