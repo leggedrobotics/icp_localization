@@ -74,6 +74,10 @@ void FrameTracker::setTransformOdometrySourceToRangeSensor(const Rigid3d &t) {
 void FrameTracker::setIsUseOdometryForRangeSensorPosePrediction(bool value) {
 	isUseOdometryForRangeSensorPosePrediction_ = value;
 }
+void FrameTracker::setUseOdomAfterNumScans(const int odomAfterNumScans) {
+	odomAfterNumScans_ = odomAfterNumScans;
+	std::cout << "Odom after num scans set to: " << odomAfterNumScans << std::endl;
+}
 
 Rigid3d FrameTracker::getTransformOdomToOdomSource(const Time &time) const {
 	const auto ret = getTransform(time, odomToTrackingCamera_);
@@ -114,7 +118,9 @@ void FrameTracker::setTransformOdomToOdomSource(
 }
 
 Rigid3d FrameTracker::getPoseChangeOfRangeSensorInMapFrame(const Time &start,
-		const Time &finish) const {
+		const Time &finish) {
+
+	++odometryCounter_;
 
 	assert_ge(toUniversal(finish), toUniversal(start));
 
@@ -122,7 +128,8 @@ Rigid3d FrameTracker::getPoseChangeOfRangeSensorInMapFrame(const Time &start,
 //	const auto dTimu = computeFromImu(start, finish);
 // std::cout << "From odometry: " << dTodometry.asString() << std::endl;
 // std::cout << "From imu: " << dTimu.asString() << "\n\n";
-	if (isUseOdometryForRangeSensorPosePrediction_) {
+	if (isUseOdometryForRangeSensorPosePrediction_ && odometryCounter_ > odomAfterNumScans_) {
+		std::cout << "Using external odometry." << std::endl;
 		return computeFromOdometry(start, finish);
 	} else {
 		return computeFromImu(start, finish);
