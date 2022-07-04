@@ -29,7 +29,7 @@ The package has been tested on the platforms shown in the images below. It has a
 
 ## Installation
 
-Clone the following three dependencies:
+If not on ANYmal, clone the following three dependencies:
 ```bash
 # in your source folder `src`
 git clone https://github.com/leggedrobotics/libnabo.git

@@ -18,6 +18,7 @@
 #include "pointmatcher_ros/transform.h"
 #include "pointmatcher_ros/serialization.h"
 #include "pointmatcher_ros/deserialization.h"
+#include "pointmatcher_ros/RosPointCloud2Deserializer.h"
 #include <pointmatcher_ros/StampedPointCloud.h>
 #include "pointmatcher/IO.h"
 #include <thread>
@@ -201,7 +202,7 @@ DP ICPlocalization::fromPCL(const Pointcloud &pcl) {
 	//todo this can result in data loss???
 	sensor_msgs::PointCloud2 ros;
 	pcl::toROSMsg(pcl, ros);
-	return pointmatcher_ros::rosMsgToPointMatcherCloud<float>(ros);
+	return pointmatcher_ros::RosPointCloud2Deserializer<float>::deserialize(ros);
 }
 
 const std::string& ICPlocalization::getFixedFrame() const {
