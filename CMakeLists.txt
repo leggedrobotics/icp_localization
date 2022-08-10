@@ -45,7 +45,6 @@ find_package(catkin REQUIRED
     ${CATKIN_PACKAGE_DEPENDENCIES}
 )
 
-find_package(PCL 1.10 REQUIRED)
 find_package(libpointmatcher REQUIRED)
 
 ###################################
