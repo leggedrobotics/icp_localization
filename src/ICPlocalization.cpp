@@ -140,12 +140,18 @@ void ICPlocalization::initialize() {
 		ROS_ERROR_STREAM("failed to load odometry data topic");
 	}
 
+	fixedFrame_ = nh_.param<std::string>("icp_localization/fixed_frame", "map");
+	std::cout << "Setting fixed frame to: " << fixedFrame_ << std::endl;
+	rangeSensorFrame_ = nh_.param<std::string>("icp_localization/range_sensor_frame", "lidar");
+	std::cout << "Setting range sensor frame to: " << rangeSensorFrame_ << std::endl;
+
 	std::cout << "odometry data topic: " << odometryDataTopic << std::endl;
 	std::cout << "imu data topic: " << imuDataTopic << std::endl;
 
 	isUseOdometry_ = nh_.param<bool>("icp_localization/is_use_odometry", false);
 	std::cout << "Is use odometry: " << std::boolalpha << isUseOdometry_ << "\n";
 
+	tfPublisher_->setMapFrame(fixedFrame_);
 	tfPublisher_->setOdometryTopic(odometryDataTopic);
 	tfPublisher_->setImuTopic(imuDataTopic);
 	tfPublisher_->setIsProvideOdomFrame(isUseOdometry_);
@@ -182,11 +188,6 @@ void ICPlocalization::initialize() {
 	std::cout << "range data parameters: \n";
 	std::cout << "topic: " << rangeDataAccParam.inputRangeDataTopic_ << "\n";
 	std::cout << "num range data accumulated: " << rangeDataAccParam.numAccumulatedRangeData_ << "\n \n";
-
-	fixedFrame_ = nh_.param<std::string>("icp_localization/fixed_frame", "map");
-	std::cout << "Setting fixed frame to: " << fixedFrame_ << std::endl;
-	rangeSensorFrame_ = nh_.param<std::string>("icp_localization/range_sensor_frame", "lidar");
-	std::cout << "Setting range sensor frame to: " << rangeSensorFrame_ << std::endl;
 
 	rangeDataAccumulator_.setParam(rangeDataAccParam);
 	rangeDataAccumulator_.initialize();

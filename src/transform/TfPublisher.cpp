@@ -41,6 +41,10 @@ TfPublisher::TfPublisher(const ros::NodeHandle &nh,
 
 }
 
+void TfPublisher::setMapFrame(const std::string &frame) {
+	mapFrame_ = frame;
+}
+
 void TfPublisher::setOdometryTopic(const std::string &topic) {
 	odometryTopic_ = topic;
 }
@@ -61,7 +65,7 @@ void TfPublisher::initialize() {
 void TfPublisher::publishMapToRangeSensor(const Time &t) {
 	const auto mapToLidar = frameTracker_->getTransformMapToRangeSensor(t);
 	geometry_msgs::TransformStamped transformStamped = toRos(mapToLidar, t,
-			"map", "range_sensor");
+			mapFrame_, "range_sensor");
 	tfBroadcaster_.sendTransform(transformStamped);
 }
 
@@ -81,13 +85,13 @@ void TfPublisher::setInitialPose(const Eigen::Vector3d &p, const Eigen::Quaterni
 void TfPublisher::publishMapToOdom(const Time &t) {
 	const auto mapToOdom = frameTracker_->getTransformMapToOdom(t);
 	geometry_msgs::TransformStamped transformStamped = toRos(mapToOdom, t,
-			"map", "odom");
+			mapFrame_, "odom");
 	tfBroadcaster_.sendTransform(transformStamped);
 	//just for debug
 
 	if (isDebug) {
 		const auto mapToLidar = frameTracker_->getTransformMapToRangeSensor(t);
-		transformStamped = toRos(mapToLidar, t, "map", "rs_check");
+		transformStamped = toRos(mapToLidar, t, mapFrame_, "rs_check");
 		tfBroadcaster_.sendTransform(transformStamped);
 
 
@@ -99,7 +103,7 @@ void TfPublisher::publishMapToOdom(const Time &t) {
 
 
 		const auto check = mapToLidar * lidarToCam;
-		transformStamped = toRos(check, t, "map", "rs_os_check");
+		transformStamped = toRos(check, t, mapFrame_, "rs_os_check");
 		tfBroadcaster_.sendTransform(transformStamped);
 	}
 
@@ -132,7 +136,7 @@ void TfPublisher::odometryCallback(const nav_msgs::Odometry &msg) {
 		const Rigid3d initPose(initPosition_,initOrientation_);
 		const Rigid3d lidarToOdomSource = frameTracker_->getTransformOdomSourceToRangeSensor(Time(fromSeconds(0))).inverse();
 		transformStamped = toRos(initPose * lidarToOdomSource,
-				odomToTracking.time_, "map", "init_odom_source");
+				odomToTracking.time_, mapFrame_, "init_odom_source");
 		tfBroadcaster_.sendTransform(transformStamped);
 		transformStamped = toRos(
 						odomToTracking.transform_, odomToTracking.time_, "init_odom_source",
@@ -156,7 +160,7 @@ void TfPublisher::imuCallback(const sensor_msgs::Imu &msg) {
 //	Rigid3d odomToOdomSource = imuTracker_->getLatestOdometry();
 ////	std::cout << "IMu odom: " << odomToOdomSource.asString() << std::endl;
 //	geometry_msgs::TransformStamped transformStamped = toRos(odomToOdomSource,
-//			imuReading.time_, "map", "odom_imu");
+//			imuReading.time_, mapFrame_, "odom_imu");
 //	tfBroadcaster_.sendTransform(transformStamped);
 //	}
 	//todo I should fuse those two somehow

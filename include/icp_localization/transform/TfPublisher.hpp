@@ -24,6 +24,7 @@ class TfPublisher
   TfPublisher(const ros::NodeHandle &nh, std::shared_ptr<FrameTracker> frameTracker,
               std::shared_ptr<ImuTracker> imuTracker);
   ~TfPublisher() = default;
+  void setMapFrame(const std::string &frame);
   void setOdometryTopic(const std::string &topic);
   void setImuTopic(const std::string &topic);
 
@@ -39,6 +40,7 @@ class TfPublisher
   void imuCallback(const sensor_msgs::Imu &msg);
 
   tf2_ros::TransformBroadcaster tfBroadcaster_;
+  std::string mapFrame_;
   std::string odometryTopic_;
   std::string imuTopic_;
   ros::NodeHandle nh_;
