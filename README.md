@@ -17,8 +17,10 @@ Released under [BSD 3-Clause license](LICENSE). Parts of the code in this repo h
 |[![forest](doc/localization_forest.gif)](doc/localization_forest.gif)|[![urban](doc/localization_urban.gif)](doc/localization_urban.gif)|
 
 
-The package has been tested on the platforms shown in the images below. It has also been used during the ETH Robotic Summer School 2021
- ([link](https://robotics-summerschool.ethz.ch/)).  
+The package has been tested on the platforms shown in the images below. It has also been used during the ETH Robotic Summer School 2021 & 2022
+ ([link](https://robotics-summerschool.ethz.ch/)). The corresponding launch files can be found [here](https://github.com/ETHZ-RobotX/smb_common/tree/master/smb_slam).
+ 
+A corresponding map can for example be created using [Open3D SLAM](https://github.com/leggedrobotics/open3d_slam).
  
 | handheld sensor module | skid steer robot | legged robot |
 |:--------:|------------------|--------------|
