@@ -305,14 +305,10 @@ void ICPlocalization::icpWorker() {
 
 //    ROS_INFO_STREAM_THROTTLE(10.0, "Scan matching took: " << timeMs << " ms");
 
-		std::thread t([this]() {
-			publishPose();
-			publishRegisteredCloud();
-		});
+		publishPose();
+		publishRegisteredCloud();
 
-		t.detach();
 		r.sleep();
-
 	}
 }
 
