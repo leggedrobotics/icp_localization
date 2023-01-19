@@ -58,6 +58,7 @@ class ICPlocalization
   ros::NodeHandle nh_;
   ros::Publisher registeredCloudPublisher_;
   ros::Publisher posePub_;
+  ros::Publisher transformPub_;
   ros::Subscriber initialPose_;
   PM::ICPSequence icp_;
   PM::DataPointsFilters inputFilters_;
@@ -78,6 +79,7 @@ class ICPlocalization
   std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
   bool isFirstScanMatch_ = true;
   bool isUseOdometry_ = false;
+  int odomAfterNumScans_ = 0;
   bool isSetPoseFromUser_ = false;
   std::string fixedFrame_ = "map";
 };

@@ -91,6 +91,7 @@ void ICPlocalization::initializeInternal() {
 
 	registeredCloudPublisher_ = nh_.advertise<sensor_msgs::PointCloud2>("registered_cloud", 1, true);
 	posePub_ = nh_.advertise<geometry_msgs::PoseStamped>("range_sensor_pose", 1, true);
+	transformPub_ = nh_.advertise<geometry_msgs::TransformStamped>("range_sensor_transform", 1, true);
 	icp_.setDefault();
 
 	// Initialite tf listener
@@ -142,6 +143,8 @@ void ICPlocalization::initialize() {
 
 	isUseOdometry_ = nh_.param<bool>("icp_localization/is_use_odometry", false);
 	std::cout << "Is use odometry: " << std::boolalpha << isUseOdometry_ << "\n";
+	odomAfterNumScans_ = nh_.param<int>("icp_localization/use_odometry_after_num_scans", false);
+	std::cout << "External odometry will be used after num iterations: " << odomAfterNumScans_ << "\n";
 
 	tfPublisher_->setOdometryTopic(odometryDataTopic);
 	tfPublisher_->setImuTopic(imuDataTopic);
@@ -162,6 +165,7 @@ void ICPlocalization::initialize() {
 	frameTracker_->setTransformOdometrySourceToRangeSensor(odometrySourceToRangeSensor);
 	frameTracker_->setTransformImuToRangeSensor(imuToRangeSensor);
 	frameTracker_->setIsUseOdometryForRangeSensorPosePrediction(isUseOdometry_);
+	frameTracker_->setUseOdomAfterNumScans(odomAfterNumScans_);
 
 	const int minNumOdomMeasurements = nh_.param<int>("icp_localization/min_num_odom_msgs_before_ready", 300);
 
@@ -262,6 +266,7 @@ void ICPlocalization::matchScans() {
 }
 
 void ICPlocalization::publishPose() const {
+	// Pose
 	geometry_msgs::PoseStamped pose_msg;
 	pose_msg.pose = pointmatcher_ros::eigenMatrixToPoseMsg<float>(optimizedPose_);
 	pose_msg.header.frame_id = fixedFrame_;
@@ -269,6 +274,16 @@ void ICPlocalization::publishPose() const {
 	pose_msg.header.seq = seq_++;
 	posePub_.publish(pose_msg);
 
+	// Transform
+	geometry_msgs::TransformStamped transform_msg;
+	transform_msg.header = pose_msg.header;
+	transform_msg.transform.rotation = pose_msg.pose.orientation;
+	transform_msg.transform.translation.x = pose_msg.pose.position.x;
+	transform_msg.transform.translation.y = pose_msg.pose.position.y;
+	transform_msg.transform.translation.z = pose_msg.pose.position.z;
+	transformPub_.publish(transform_msg);
+
+	// TF
 	if (isUseOdometry_) {
 		tfPublisher_->publishMapToOdom(optimizedPoseTimestamp_);
 	} else {
